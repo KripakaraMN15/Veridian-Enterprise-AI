@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171416">
+  <title>Veridian | Enterprise Knowledge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/styles.css?v=veridian-wine-2">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Workspace navigation">
+      <a class="brand" href="/" aria-label="Veridian Enterprise AI home">
+        <span class="brand-mark" aria-hidden="true">V</span>
+        <span class="brand-name">VERIDIAN<small>ENTERPRISE AI</small></span>
+      </a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="navigation" aria-label="Main navigation">
+        <button class="nav active" id="chatTab" type="button"><span class="nav-icon" aria-hidden="true">⌕</span><span>Knowledge chat</span></button>
+        <button class="nav" id="docsTab" type="button"><span class="nav-icon" aria-hidden="true">▤</span><span>Documents</span></button>
+        <button class="nav" id="approvalTab" type="button"><span class="nav-icon" aria-hidden="true">✓</span><span>Approvals</span></button>
+        <button class="nav" id="adminTab" type="button"><span class="nav-icon" aria-hidden="true">◫</span><span>Metrics</span></button>
+      </nav>
+      <div class="sidebottom">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>Single-workspace demo · No login</span>
+      </div>
+    </aside>
+
+    <main>
+      <header class="page-header">
+        <div>
+          <div class="breadcrumb"><span>WORKSPACE</span><span aria-hidden="true">/</span><span>KNOWLEDGE</span></div>
+          <h1 id="heading">Ask your organization's knowledge</h1>
+        </div>
+        <div class="environment"><span class="status-dot" aria-hidden="true"></span>AWS-powered</div>
+      </header>
+
+      <section id="chatView" class="panel chat-panel" aria-label="Knowledge chat">
+        <div class="hero">
+          <div class="hero-kicker">VERIDIAN KNOWLEDGE</div>
+          <h2>Find the answer in your documents.</h2>
+          <p>Ask a question about approved documents. Responses include the supporting evidence.</p>
+          <div class="suggestions" aria-label="Suggested questions">
+            <button type="button" data-q="What is our leave policy?">Leave policy <span aria-hidden="true">↗</span></button>
+            <button type="button" data-q="Summarize the onboarding process">Onboarding <span aria-hidden="true">↗</span></button>
+            <button type="button" data-q="What are the IT security rules?">IT security <span aria-hidden="true">↗</span></button>
+          </div>
+        </div>
+        <div class="conversation-toolbar">
+          <span class="technical-label">CONVERSATION</span>
+          <button type="button" id="newChat" class="quiet-button">+ New conversation</button>
+        </div>
+        <div id="messages" aria-live="polite" aria-relevant="additions text"></div>
+        <form id="chatForm" class="composer">
+          <label class="sr-only" for="question">Ask a question about company knowledge</label>
+          <textarea id="question" rows="2" placeholder="Ask a question about company knowledge..." required></textarea>
+          <button type="submit">Send <span aria-hidden="true">↗</span></button>
+        </form>
+        <div class="hint">Answers may be inaccurate. Verify source passages before taking action.</div>
+      </section>
+
+      <section id="docsView" class="panel content-panel hidden" aria-label="Documents">
+        <div class="section-heading">
+          <div>
+            <div class="technical-label">KNOWLEDGE BASE</div>
+            <h2>Documents</h2>
+            <p>Manage the files available to knowledge chat. Upload an approved PDF, DOCX, TXT, or Markdown file. Use non-sensitive demo documents only.</p>
+          </div>
+          <span class="section-mark" aria-hidden="true">01</span>
+        </div>
+        <form id="uploadForm" class="upload-form">
+          <label class="file-control" for="file">
+            <span class="file-symbol" aria-hidden="true">＋</span>
+            <span><strong>Choose a document</strong><small>PDF, DOCX, TXT or MD · Maximum 10 MB</small></span>
+            <input id="file" type="file" accept=".pdf,.docx,.txt,.md" required>
+          </label>
+          <button type="submit">Upload document <span aria-hidden="true">↗</span></button>
+        </form>
+        <div class="table-wrap">
+          <div id="docs" aria-live="polite" aria-busy="false"></div>
+        </div>
+      </section>
+
+      <section id="approvalView" class="panel content-panel hidden" aria-label="Approval requests">
+        <div class="section-heading section-header">
+          <div>
+            <div class="technical-label">GOVERNANCE</div>
+            <h2>Approval requests</h2>
+            <p>Review pending requests. Approving records a decision only; no document is deleted or exported.</p>
+          </div>
+          <button type="button" id="refreshApprovals" class="secondary-button"><span aria-hidden="true">↻</span> Refresh</button>
+        </div>
+        <div id="approvalSummary" class="approval-summary" role="status"></div>
+        <div id="approvalList" aria-live="polite" aria-busy="false"></div>
+      </section>
+
+      <section id="adminView" class="panel content-panel hidden" aria-label="Workspace metrics">
+        <div class="section-heading">
+          <div>
+            <div class="technical-label">OBSERVABILITY</div>
+            <h2>Workspace metrics</h2>
+            <p>Current document and feedback totals reported by this workspace.</p>
+          </div>
+          <span class="section-mark" aria-hidden="true">02</span>
+        </div>
+        <section class="metric-section" aria-labelledby="workspaceMetricsHeading">
+          <div class="subsection-heading"><h3 id="workspaceMetricsHeading">Workspace activity</h3><span class="technical-label">API SUMMARY</span></div>
+          <div id="metrics" class="metric-output" aria-live="polite" aria-busy="true">Loading metrics...</div>
+        </section>
+        <section class="metric-section" aria-labelledby="guardrailMetricsHeading">
+          <div class="subsection-heading"><h3 id="guardrailMetricsHeading">Guardrail events</h3><span class="technical-label">API SUMMARY</span></div>
+          <div id="guardrailMetrics" class="metric-output" aria-live="polite" aria-busy="true">Loading guardrail metrics...</div>
+        </section>
+      </section>
+      <div id="toast" role="status" aria-live="polite"></div>
+    </main>
+  </div>
+  <script src="/static/js/app.js?v=veridian-design-1"></script>
+</body>
+</html>
